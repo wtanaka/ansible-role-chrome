@@ -1,0 +1,28 @@
+---
+- include: get_key.yml
+
+- name: check if key is installed
+  command: rpm -qi 'gpg-pubkey-7fac5991-*'
+  changed_when: False
+  ignore_errors: True
+  register: key_check_result
+
+# Use "command" due to
+# https://github.com/ansible/ansible-modules-core/issues/1796
+- name: add google key to rpm
+  command: rpm --import /root/google.pub
+  sudo: yes
+  when: key_check_result|failed
+
+- name: install chrome with yum or apt
+  action: "{{backcompat_pkg_mgr}} name=https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm"
+  sudo: yes
+  when: backcompat_pkg_mgr == "yum" or backcompat_pkg_mgr == "apt"
+
+# Use command since dnf was only added as a module in ansible 1.9.0
+- name: install chrome with dnf
+  command: dnf install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+  args:
+    creates: /usr/bin/google-chrome
+  sudo: yes
+  when: backcompat_pkg_mgr == "dnf"

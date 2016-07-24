@@ -1,0 +1,7 @@
+---
+- name: download google key
+  command: >
+    wget -O /root/google.pub https://dl.google.com/linux/linux_signing_key.pub
+  args:
+    creates: /root/google.pub
+  sudo: yes
