@@ -2,43 +2,43 @@
 - name: install python-apt on ansible < 1.6.0 and ubuntu et al
   sudo: yes
   raw: >
-    if command -v apt-get; then
+    if > /dev/null command -v apt-get; then
        python -c "import apt" ||
-       (command -v apt-get && apt-get install -y python-apt);
+       (> /dev/null command -v apt-get && apt-get install -y python-apt);
     fi
   when: ansible_os_family == 'Debian'
 
 - name: install python-pycurl on ansible < 1.6.0 and ubuntu et al
   sudo: yes
   raw: >
-    if command -v apt-get; then
+    if > /dev/null command -v apt-get; then
        python -c "import pycurl" ||
-       (command -v apt-get && apt-get install -y python-pycurl);
+       (> /dev/null command -v apt-get && apt-get install -y python-pycurl);
     fi
   when: ansible_os_family == 'Debian'
 
 - name: install python2-yum on ansible <=1.9.2/fedora 24
   sudo: yes
   raw: >
-    if command -v yum && ! command -v dnf; then
+    if > /dev/null command -v yum && ! > /dev/null command -v dnf; then
        python -c "import yum" ||
-       (command -v yum && ! command -v dnf && yum install -y python2-yum);
+       (> /dev/null command -v yum && ! > /dev/null command -v dnf && yum install -y python2-yum);
     fi
   when: ansible_os_family == 'RedHat'
 
 - name: install python2-dnf on ansible 2.1/fedora 24
   sudo: yes
   raw: >
-    if command -v dnf; then
+    if > /dev/null command -v dnf; then
        python -c "import dnf" ||
-       (command -v dnf && dnf install -y python2-dnf);
+       (> /dev/null command -v dnf && dnf install -y python2-dnf);
     fi
   when: ansible_os_family == 'RedHat'
 
 # Set backcompat_pkg_mgr for versions of ansible that set
 # ansible_pkg_mgr to yum instead of dnf
 - name: check for dnf
-  raw: command -v dnf
+  raw: "> /dev/null command -v dnf"
   register: dnf_result
   ignore_errors: True
   when: ansible_os_family == 'RedHat'
