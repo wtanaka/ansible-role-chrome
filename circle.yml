@@ -6,7 +6,7 @@ machine:
    # Version of ruby to use
    ruby:
       version:
-         1.9.3-p0-falcon
+         2.3.1
 
 dependencies:
    pre:
