@@ -55,11 +55,28 @@
     backcompat_pkg_mgr: '{{ansible_pkg_mgr}}'
   when: ansible_os_family == 'Debian'
 
+- set_fact:
+    ansible_distribution_major_version: >
+      {{ansible_distribution_version|truncate(2,true,'')|replace("."," ")|trim|float|int|string}}
+  when: ansible_distribution_major_version is not defined
+
+- set_fact:
+    ansible_distribution_major_version: >
+      {{ansible_distribution_version|truncate(4,true,'')|replace("."," ")|trim|float|int|string}}
+  when: ansible_distribution_major_version is not defined or not ansible_distribution_major_version
+
+- name: check for wget
+  raw: "> /dev/null command -v wget"
+  register: wget_result
+  ignore_errors: True
+
 # Install wget due to https://github.com/ansible/ansible/issues/12161
 - name: install wget with non-dnf
   action: "{{backcompat_pkg_mgr}} name=wget"
   sudo: yes
-  when: backcompat_pkg_mgr == "yum" or backcompat_pkg_mgr == "apt"
+  when: >
+    (backcompat_pkg_mgr == "yum" or backcompat_pkg_mgr == "apt")
+       and wget_result|failed
 
 # Install wget due to https://github.com/ansible/ansible/issues/12161
 # Use command since dnf was only added as a module in ansible 1.9.0
@@ -68,4 +85,4 @@
   args:
     creates: /usr/bin/wget
   sudo: yes
-  when: backcompat_pkg_mgr == "dnf"
+  when: backcompat_pkg_mgr == "dnf" and wget_result|failed
