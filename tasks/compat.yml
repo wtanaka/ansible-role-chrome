@@ -4,7 +4,9 @@
   raw: >
     if > /dev/null command -v apt-get; then
        python -c "import apt" ||
-       (> /dev/null command -v apt-get && apt-get install -y python-apt);
+       (> /dev/null command -v apt-get &&
+          (apt-get install -y python-apt ||
+             (apt-get update -qq && apt-get install -y python-apt)));
     fi
   when: ansible_os_family == 'Debian'
 
@@ -13,7 +15,9 @@
   raw: >
     if > /dev/null command -v apt-get; then
        python -c "import pycurl" ||
-       (> /dev/null command -v apt-get && apt-get install -y python-pycurl);
+       (> /dev/null command -v apt-get &&
+          (apt-get install -y python-pycurl ||
+             (apt-get update -qq && apt-get install -y python-pycurl)));
     fi
   when: ansible_os_family == 'Debian'
 
