@@ -57,12 +57,12 @@
 
 - set_fact:
     ansible_distribution_major_version: >
-      {{ansible_distribution_version|truncate(2,true,'')|replace("."," ")|trim|float|int|string}}
+      {{ansible_distribution_version|truncate(2,true,'',0)|replace(".", " ")|trim|float|int|string}}
   when: ansible_distribution_major_version is not defined
 
 - set_fact:
     ansible_distribution_major_version: >
-      {{ansible_distribution_version|truncate(4,true,'')|replace("."," ")|trim|float|int|string}}
+      {{ansible_distribution_version|truncate(4,true,'',0)|replace("."," ")|trim|float|int|string}}
   when: ansible_distribution_major_version is not defined or not ansible_distribution_major_version
 
 - name: check for wget
