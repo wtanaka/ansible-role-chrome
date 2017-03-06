@@ -9,6 +9,7 @@
              (apt-get update -qq && apt-get install -y python-apt)));
     fi
   when: ansible_os_family == 'Debian'
+  changed_when: False
 
 - name: install python-pycurl on ansible < 1.6.0 and ubuntu et al
   sudo: yes
@@ -20,6 +21,7 @@
              (apt-get update -qq && apt-get install -y python-pycurl)));
     fi
   when: ansible_os_family == 'Debian'
+  changed_when: False
 
 - name: install python2-yum on ansible <=1.9.2/fedora 24
   sudo: yes
@@ -29,6 +31,7 @@
        (> /dev/null command -v yum && ! > /dev/null command -v dnf && yum install -y python2-yum);
     fi
   when: ansible_os_family == 'RedHat'
+  changed_when: False
 
 - name: install python2-dnf on ansible 2.1/fedora 24
   sudo: yes
@@ -38,6 +41,7 @@
        (> /dev/null command -v dnf && dnf install -y python2-dnf);
     fi
   when: ansible_os_family == 'RedHat'
+  changed_when: False
 
 # Set backcompat_pkg_mgr for versions of ansible that set
 # ansible_pkg_mgr to yum instead of dnf
@@ -46,6 +50,7 @@
   register: dnf_result
   ignore_errors: True
   when: ansible_os_family == 'RedHat'
+  changed_when: False
 
 - set_fact:
     backcompat_pkg_mgr: 'dnf'
@@ -73,6 +78,7 @@
   raw: "> /dev/null command -v wget"
   register: wget_result
   ignore_errors: True
+  changed_when: False
 
 # Install wget due to https://github.com/ansible/ansible/issues/12161
 - name: install wget with non-dnf
