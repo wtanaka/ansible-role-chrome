@@ -12,7 +12,7 @@ script:
   wget -O- bit.ly/ansibletest | env
   DOCKER_IMAGES="ubuntu:14.04 ubuntu:16.04 fedora:21 fedora:24
   debian:8"
-  ANSIBLE_VERSIONS="1.4 1.6.1 1.8.4 2.1.0.0" sh
+  ANSIBLE_VERSIONS="1.4 1.8.4 2.1.0.0" sh
 after_failure:
 - cat role-tester-ansible-master/.kitchen/logs/*.log | grep -v '^I, '
 notifications:
