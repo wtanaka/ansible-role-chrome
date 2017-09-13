@@ -18,12 +18,9 @@ galaxy_info:
     - xenial
   - name: Fedora
     versions:
-    - 20
-    - 21
-    - 22
-    - 23
     - 24
     - 25
+    - 26
   categories:
   - desktop
   - networking
