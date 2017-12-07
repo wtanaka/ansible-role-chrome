@@ -5,3 +5,5 @@
   args:
     creates: /root/google.pub
   sudo: yes
+  register: result_download_key
+  until: result_download_key|success

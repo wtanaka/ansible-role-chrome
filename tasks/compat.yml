@@ -8,6 +8,8 @@
           (apt-get install -y python-apt ||
              (apt-get update -qq && apt-get install -y python-apt)));
     fi
+  register: result_python_apt
+  until: result_python_apt|success
   when: ansible_os_family == 'Debian'
   changed_when: False
 
@@ -20,6 +22,8 @@
           (apt-get install -y python-pycurl ||
              (apt-get update -qq && apt-get install -y python-pycurl)));
     fi
+  register: result_python_pycurl
+  until: result_python_pycurl|success
   when: ansible_os_family == 'Debian'
   changed_when: False
 
@@ -30,6 +34,8 @@
        python -c "import yum" ||
        (> /dev/null command -v yum && ! > /dev/null command -v dnf && yum install -y python2-yum);
     fi
+  register: result_python_yum
+  until: result_python_yum|success
   when: ansible_os_family == 'RedHat'
   changed_when: False
 
@@ -40,6 +46,8 @@
        python -c "import dnf" ||
        (> /dev/null command -v dnf && dnf install -y python2-dnf);
     fi
+  register: result_python_dnf
+  until: result_python_dnf|success
   when: ansible_os_family == 'RedHat'
   changed_when: False
 
@@ -83,6 +91,8 @@
 # Install wget due to https://github.com/ansible/ansible/issues/12161
 - name: install wget with non-dnf
   action: "{{backcompat_pkg_mgr}} name=wget"
+  register: result_wget
+  until: result_wget|success
   sudo: yes
   when: >
     (backcompat_pkg_mgr == "yum" or backcompat_pkg_mgr == "apt")
@@ -92,6 +102,8 @@
 # Use command since dnf was only added as a module in ansible 1.9.0
 - name: install wget with dnf
   command: dnf install -y wget
+  register: result_wget_dnf
+  until: result_wget_dnf|success
   args:
     creates: /usr/bin/wget
   sudo: yes
