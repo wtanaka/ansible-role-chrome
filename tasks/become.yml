@@ -1,0 +1,9 @@
+---
+- { become: yes, include: compat.yml }
+- { become: yes, include: get_key.yml }
+- become: yes
+  include: Debian.yml
+  when: ansible_os_family in [ 'Debian', 'Linuxmint' ]
+- become: yes
+  include: RedHat.yml
+  when: ansible_os_family in [ 'RedHat' ]
