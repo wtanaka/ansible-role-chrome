@@ -1,0 +1,7 @@
+---
+- include: compat_sudo.yml
+- include: get_key_sudo.yml
+- include: Debian_sudo.yml
+  when: ansible_os_family in [ 'Debian', 'Linuxmint' ]
+- include: RedHat_sudo.yml
+  when: ansible_os_family == 'RedHat'

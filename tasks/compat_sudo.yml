@@ -1,5 +1,6 @@
 ---
 - name: install python-apt on ansible < 1.6.0 and ubuntu et al
+  sudo: yes
   raw: >
     if > /dev/null command -v apt-get; then
        python -c "import apt" ||
@@ -17,6 +18,7 @@
   changed_when: False
 
 - name: install python-pycurl on ansible < 1.6.0 and ubuntu et al
+  sudo: yes
   raw: >
     if > /dev/null command -v apt-get; then
        python -c "import pycurl" ||
@@ -34,6 +36,7 @@
   changed_when: False
 
 - name: install python2-yum on ansible <=1.9.2/fedora 24
+  sudo: yes
   raw: >
     if > /dev/null command -v yum && ! > /dev/null command -v dnf; then
        python -c "import yum" ||
@@ -49,6 +52,7 @@
   changed_when: False
 
 - name: install python2-dnf on ansible 2.1/fedora 24
+  sudo: yes
   raw: >
     if > /dev/null command -v dnf; then
        python -c "import dnf" ||
@@ -110,6 +114,7 @@
   # increase default retry count
   retries: 20
   delay: 10
+  sudo: yes
   when: >
     should_run and
     (backcompat_pkg_mgr == "yum" or backcompat_pkg_mgr == "apt")
@@ -127,4 +132,5 @@
   delay: 10
   args:
     creates: /usr/bin/wget
+  sudo: yes
   when: should_run and backcompat_pkg_mgr == "dnf" and wget_result|failed

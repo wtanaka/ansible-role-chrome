@@ -21,4 +21,4 @@ GPLv2
 Author Information
 ------------------
 
-http://wtanaka.com/
+https://wtanaka.com/

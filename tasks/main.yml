@@ -1,8 +1,7 @@
 ---
-- include: compat.yml
+- name: set should_run fact
+  set_fact:
+    should_run: True
 
-- include: Debian.yml
-  when: ansible_os_family in [ 'Debian', 'Linuxmint' ]
-
-- include: RedHat.yml
-  when: ansible_os_family == 'RedHat'
+- include: include_vars.yml
+- include: sudoorbecome.yml
