@@ -1,0 +1,27 @@
+# Ruby CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-ruby/ for more details
+#
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: sudo apt-get update -qq
+      - run: sudo apt-get install -y wget make ruby-bundler python-virtualenv
+      # Needed to upgrade requests[security] on Ubuntu 14.04
+      - run: sudo apt-get install -y python-dev libffi-dev libssl-dev
+      - run: sudo apt-get install -y docker.io
+      # Run test
+      # Cannot use fedora:20 image due to
+      # https://fedorahosted.org/spin-kickstarts/ticket/55
+      - run: >
+          wget -qO- bit.ly/ansibletest | env
+          DOCKER_IMAGES="ubuntu:14.04 ubuntu:16.04 fedora:24 fedora:25 debian:8"
+          ANSIBLE_VERSIONS="1.4 1.6.1 1.8.4 2.1.0.0 2.2.1.0"
+          sh
+      - run:
+          name: cat fake-role-no-tests .kitchen/logs/kitchen.log
+          command: cat fake-role-no-tests/role-tester/.kitchen/logs/kitchen.log
+          when: on_fail
