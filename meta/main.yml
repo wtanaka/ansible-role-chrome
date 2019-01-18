@@ -21,9 +21,12 @@ galaxy_info:
     - 24
     - 25
     - 26
-  categories:
+  galaxy_tags:
+  - browser
+  - chrome
   - desktop
   - networking
+  - webbrowser
 dependencies: []
   # List your role dependencies here, one per line. Only
   # dependencies available via galaxy should be listed here.
