@@ -134,3 +134,15 @@
     creates: /usr/bin/wget
   sudo: yes
   when: should_run and backcompat_pkg_mgr == "dnf" and wget_result|failed
+
+- name: Remove wheezy-updates
+  command: sed -i.old -e 's/\(.*deb.debian.org\/debian wheezy-updates\)/#\1/' /etc/apt/sources.list
+  changed_when: False
+  sudo: yes
+  when: should_run and ansible_os_family == 'Debian'
+
+- name: Switch debian wheezy to archives
+  command: sed -i.old -e 's/deb.debian.org\/debian wheezy/archive.debian.org\/debian wheezy/' /etc/apt/sources.list
+  changed_when: False
+  sudo: yes
+  when: should_run and ansible_os_family == 'Debian'
